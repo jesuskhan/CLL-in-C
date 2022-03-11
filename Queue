@@ -1,0 +1,79 @@
+#include  <stdio.h>
+#include  <stdlib.h>
+
+#define n 10
+
+int queue[n];
+int top=0;
+int rear=-1;
+
+
+void insert(int x)
+{
+    if(rear==n-1)
+        printf("Queue Overflow\n",x);
+    else
+    {
+        rear++;
+        queue[rear]=x;
+        printf("%d is inserted in the queue\n",x);
+    }
+        
+}
+
+void delete()
+{
+    if(top>rear)
+        printf("Queue Underflow\n");
+    else
+    {
+        int element=queue[top];
+        top++;
+        printf("%d is deleted from the queue\n",element);
+    }
+}
+
+void display()
+{
+    int i;
+    printf("The elements in the queue are: \n");
+    for(i=top;i<=rear;i++)
+    {
+        printf("%d\n",queue[i]);
+        
+    }
+    
+}
+
+int main()
+{ 
+    int s,option;
+    char option2;
+    do
+    {
+        printf("Enter the opreation you want to perform\n");
+        printf("1 for insert, 2 for delete, 3 for display\n");
+        scanf("%d",&option);
+        getchar();
+        switch(option)
+        {
+            case 1:     
+                        printf("Enter an element: \n");
+                        scanf("%d",&s);
+                        getchar();
+                        insert(s);
+                        break;
+            case 2:
+                       delete();
+                       break;
+            case 3:
+                       display();
+                       break;
+                    
+        }
+        printf("Do you want to continue(y for yes/n for no)\n");
+        scanf("%c",&option2);
+    } while(option2=='y');    
+    
+  return 0;
+}
