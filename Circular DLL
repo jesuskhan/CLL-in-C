@@ -1,0 +1,353 @@
+#include  <stdio.h>
+#include  <stdlib.h>
+
+struct node{
+    int data;
+    struct node *next;
+    struct node *prev;
+};
+
+struct node *head,*tail;
+
+void create()
+{
+    int i,size;
+    printf("Enter the number of elements in the list\n");
+    scanf("%d",&size);
+    for(i=0;i<size;i++)
+    {
+        struct node *NewNode = (struct node *)malloc(sizeof(struct node));
+        printf("Enter the element for node %d",i+1);
+        scanf("%d",&NewNode->data);
+        
+        if(head == NULL)
+        {
+            head=tail=NewNode;
+            head->next = head->prev = NewNode;
+        }
+        else
+        {
+            tail->next=NewNode;
+            NewNode->prev=tail;
+            NewNode->next=head;
+            head->prev=NewNode;
+            tail=NewNode;
+        }
+    }
+}
+
+void display()
+{
+    struct node *temp=head;
+    if(head==NULL)
+    {
+        printf("Linked list is empty\n");
+    }
+    else
+    {
+        printf("The linked list is: ");
+        do{
+            printf("%d ",temp->data);
+            temp=temp->next;
+        }while(temp != tail->next);
+    }
+}
+
+void insert_at_beg()
+{
+    struct node *NewNode = (struct node *)malloc(sizeof(struct node));
+    printf("Enter the data to be inserted\n");
+    scanf("%d",&NewNode->data);
+    if(head == NULL)
+    {
+        head=tail=NewNode;
+        head->next = head->prev = NewNode;
+    }
+    else
+    {
+        tail->next=NewNode;
+        NewNode->prev=tail;
+        NewNode->next=head;
+        head->prev=NewNode;
+        head=NewNode;
+    }
+}
+
+void insert_at_end()
+{
+    struct node *NewNode = (struct node *)malloc(sizeof(struct node));
+    printf("Enter the data to be inserted\n");
+    scanf("%d",&NewNode->data);
+    if(head == NULL)
+    {
+        head=tail=NewNode;
+        head->next = head->prev = NewNode;
+    }
+    else
+    {
+        tail->next=NewNode;
+        NewNode->prev=tail;
+        NewNode->next=head;
+        head->prev=NewNode;
+        tail=NewNode;
+    }
+}
+
+void insert_at_pos()
+{
+    int pos,i=1;
+    struct node *temp=head;
+    struct node *NewNode = (struct node *)malloc(sizeof(struct node));
+    printf("Enter the position of the element\n");
+    scanf("%d",&pos);
+    
+    if(pos == 1)
+    {
+        insert_at_beg();
+    }
+    else
+    {
+        printf("Enter the data to be inserted\n");
+        scanf("%d",&NewNode->data);
+        while(i < pos-1)
+        {
+            temp=temp->next;
+            i++;
+        }
+        NewNode->prev=temp;
+        NewNode->next=temp->next;
+        temp->next->prev=NewNode;
+        temp->next=NewNode;
+    }   
+}
+
+void delete_at_beg()
+{
+    struct node *temp=head;
+    if(head==NULL)
+    {
+        printf("Linked list is empty\n");
+    }
+    else if(head == tail)
+    {
+        head = tail = NULL;
+        free(temp);
+    }
+    else
+    {
+        head=head->next;
+        head->prev=tail;
+        tail->next=head;
+        free(temp);
+    }
+}
+
+void delete_at_end()
+{
+    struct node *temp=tail;
+    if(head==NULL)
+    {
+        printf("Linked list is empty\n");
+    }
+    else if(head == tail)
+    {
+        head = tail = NULL;
+        free(temp);
+    }
+    else
+    {
+        tail=tail->prev;
+        tail->next=head;
+        head->prev=tail;
+        free(temp);
+    }
+}
+
+void delete_at_pos()
+{
+    int pos,i=1;
+    struct node *temp=head;
+    printf("Enter the position to be deleted\n");
+    scanf("%d",&pos);
+    
+    if(pos == 1)
+    {
+        delete_at_beg();
+    }
+    else
+    {
+        while(i < pos-1)
+        {
+            temp=temp->next;
+            i++;
+        }
+        temp->prev->next=temp->next;
+        temp->next->prev=temp->prev;
+        if(temp->next == head)
+        {
+            tail=temp->prev;
+            free(temp);
+        }
+        else
+        {
+            free(temp);
+        }
+    }
+}
+
+void update_value()
+{
+    struct node *temp=head;
+    int a,b;
+    printf("Enter the element to be updated\n");
+    scanf("%d",&a);
+    printf("Enter the new value\n");
+    scanf("%d",&b);
+    
+    while(temp->data != a)
+    {
+        temp = temp->next;
+    }
+    temp->data=b;
+}
+
+void update_at_pos()
+{
+    int pos,i=0,b;
+    struct node *temp=head;
+    printf("Enter the position to be updated\n");
+    scanf("%d",&pos);
+    printf("Enter the new value\n");
+    scanf("%d",&b);
+    
+    while(i < pos-1)
+    {
+        temp=temp->next;
+        i++;
+    }
+    temp->data=b;
+}
+
+void search()
+{
+    int x, i = 1;
+    struct node *NewNode = (struct node *)malloc(sizeof(struct node));
+    NewNode = tail->next;
+    if (NewNode == NULL)
+    {
+        printf("Linked List is empty\n");
+    }
+    else
+    {
+        printf("Enter the data you want to search\n");
+        scanf("%d", &x);
+        while (NewNode->data != x)
+        {
+            NewNode = NewNode->next;
+            i++;
+        }
+        printf("Node found at %d\n", i);
+    }
+}
+
+void length()
+{
+    int count = 1;
+    struct node *temp = head;
+    if (head == NULL)
+    {
+        printf("Linked List is empty\n");
+    }
+    else
+    {
+        while (temp != tail)
+        {
+            temp = temp->next;
+            count++;
+        }
+    }
+    printf("Length of Linked List is %d\n", count);
+}
+
+
+int main()
+{
+    int oper;
+    
+    while(1)
+    {
+        printf("\nWhich operation do you want to perform\n");
+        printf("1. Create a linked list\n");
+        printf("2. Display\n");
+        printf("3. Insert at beginning\n");
+        printf("4. Insert at end\n");
+        printf("5. Insert at position\n");
+        printf("6. Delete at beginning\n");
+        printf("7. Delete at end\n");
+        printf("8. Delete at position\n");
+        printf("9. Update Value");
+        printf("10. Update at position\n");
+        printf("11. Search\n");
+        printf("12. Length\n");
+        scanf("%d",&oper);
+    
+        switch(oper)
+        {
+            case 1:
+                create();
+                break;
+            
+            case 2:
+                display();
+                break;
+            
+            case 3:
+                insert_at_beg();
+                break;
+                
+            case 4:
+                insert_at_end();
+                break;
+                
+            case 5:
+                insert_at_pos();
+                break;
+                
+            case 6:
+                delete_at_beg();
+                break;
+                
+            case 7:
+                delete_at_end();
+                break;
+                
+            case 8:
+                delete_at_pos();
+                break;
+                
+            case 9:
+                update_value();
+                break;
+                
+            case 10:
+                update_at_pos();
+                break;
+                
+            case 11:
+                search();
+                break;
+                
+            case 12:
+                length();
+                break;
+            
+            case 0:
+                exit(1);
+                break;
+            
+            default:
+                printf("Enter valid operator\n");
+        }
+    }
+  return 0;
+}
